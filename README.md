@@ -1,5 +1,3 @@
-
-```markdown
 # BattlEye User-Mode Bypass – Research & Proof of Concept
 
 ![GitHub last commit](https://img.shields.io/badge/last%20commit-April%202026-blue) ![Research only](https://img.shields.io/badge/purpose-academic%20research-red) ![Windows](https://img.shields.io/badge/platform-Windows-lightgrey)
@@ -289,4 +287,3 @@ Testing must be conducted on offline, isolated systems with no network connectiv
 
 **Last updated:** April 2026  
 **Research status:** Proof of concept for Windows 10/11 x64 against BattlEye versions up to April 2026.
-```
