@@ -1,6 +1,8 @@
+
+```markdown
 # BattlEye User-Mode Bypass – Research & Proof of Concept
 
-![GitHub last commit](https://img.shields.io/badge/last%20commit-April%202025-blue) ![Research only](https://img.shields.io/badge/purpose-academic%20research-red) ![Windows](https://img.shields.io/badge/platform-Windows-lightgrey)
+![GitHub last commit](https://img.shields.io/badge/last%20commit-April%202026-blue) ![Research only](https://img.shields.io/badge/purpose-academic%20research-red) ![Windows](https://img.shields.io/badge/platform-Windows-lightgrey)
 
 This repository documents and implements user-mode techniques to bypass BattlEye anti-cheat without loading any kernel drivers. The project is purely for educational research to understand how modern anti-cheat systems detect cheats and how those detections can be evaded using only user-mode privileges.
 
@@ -30,11 +32,7 @@ BattlEye is a kernel-level anti-cheat system used in many popular games: Rainbow
 
 2. **User-Mode Service (`BEService.exe`)** – Communicates with the kernel driver and the game. It loads a DLL into the game process that hooks critical Windows API functions.
 
-The following diagram illustrates BattlEye's layered architecture:
-
-![BattlEye Architecture Diagram](images/battleye_arch.png)
-
-*Figure 1: BattlEye's user-mode hooks sit inside ntdll.dll, intercepting API calls before they reach the kernel. The kernel driver monitors from below.*
+*BattlEye Architecture: user-mode hooks sit inside ntdll.dll intercepting API calls before they reach the kernel. The kernel driver monitors from below.*
 
 ## Why User-Mode?
 
@@ -59,9 +57,7 @@ BattlEye specifically looks for:
 | Memory patterns | Kernel scans game memory for known cheat signatures |
 | Open handles | Kernel callbacks detect any handle with `PROCESS_VM_WRITE` or `PROCESS_VM_OPERATION` |
 
-![API Hook Diagram](images/api_hook.png)
-
-*Figure 2: Standard API call flow vs. direct syscall flow. BattlEye hooks the green path; direct syscalls take the red path.*
+*API Call Flow: Standard API calls hit hooks; direct syscalls bypass them entirely.*
 
 ## Evasion Methods
 
@@ -132,11 +128,7 @@ Now you have a valid handle to the game without ever calling `OpenProcess` on th
 4. Applies relocations if the base address differs
 5. Calls the DLL entry point with `DLL_PROCESS_ATTACH`
 
-**Simplified flow:**
-
-![Manual Mapping Flow](images/manual_map.png)
-
-*Figure 3: Manual mapping avoids LoadLibrary hooks by manually reconstructing the DLL in memory.*
+*Manual Mapping Flow: Avoid LoadLibrary hooks by manually reconstructing the DLL in memory.*
 
 Import resolution must also avoid hooks on `GetProcAddress`. Use direct syscalls or parse `ntdll`'s export table manually.
 
@@ -180,9 +172,7 @@ For production, use AES-256 with a key derived from a system identifier (e.g., v
 
 The complete bypass tool consists of several components working together:
 
-![Tool Architecture](images/arch.png)
-
-*Figure 4: The injector uses direct syscalls for all memory operations, steals a handle via duplication, loads the payload with manual mapping, and triggers execution via a new thread.*
+*Injector architecture: Direct syscalls for memory ops, handle duplication for process access, manual mapping for payload loading, and remote thread creation for execution.*
 
 ## Code Examples
 
@@ -299,3 +289,4 @@ Testing must be conducted on offline, isolated systems with no network connectiv
 
 **Last updated:** April 2026  
 **Research status:** Proof of concept for Windows 10/11 x64 against BattlEye versions up to April 2026.
+```
